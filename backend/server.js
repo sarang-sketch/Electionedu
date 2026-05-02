@@ -18,6 +18,9 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const compression = require('compression');
+const hpp = require('hpp');
+const mongoSanitize = require('express-mongo-sanitize');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 dotenv.config();
@@ -84,8 +87,17 @@ app.use(cors({
   maxAge: 86400, // Cache preflight for 24 hours
 }));
 
+// Efficiency: Compress all HTTP responses
+app.use(compression());
+
 // Body parser with size limit
 app.use(express.json({ limit: '10kb' }));
+
+// Security: Prevent HTTP Parameter Pollution
+app.use(hpp());
+
+// Security: Sanitize data against NoSQL Injection (even if not using Mongo, good practice)
+app.use(mongoSanitize());
 
 // Rate limiting: prevent abuse
 const apiLimiter = rateLimit({
@@ -381,7 +393,12 @@ app.get('/api/health', (req, res) => {
       rateLimit: 'enabled',
       cors: 'restricted',
       inputSanitization: 'enabled',
+      hpp: 'enabled',
+      nosqlInjectionProtection: 'enabled'
     },
+    efficiency: {
+      compression: 'enabled'
+    }
   });
 });
 

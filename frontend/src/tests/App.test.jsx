@@ -1,15 +1,26 @@
-import { describe, it, expect } from 'vitest';
+import React from 'react';
+import { render } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import App from '../App';
+import { LanguageProvider } from '../context/LanguageContext';
 
-describe('App Component (Navigation & Layout)', () => {
-  it('renders header, navigation, and initial view', () => {
-    expect(true).toBe(true);
+vi.mock('../firebase', () => ({
+  trackPageView: vi.fn(),
+  trackLanguageChange: vi.fn(),
+  initFirebase: vi.fn(),
+}));
+
+describe('App Component', () => {
+  beforeEach(() => {
+    window.HTMLElement.prototype.scrollIntoView = function() {};
   });
 
-  it('navigates between tabs correctly', () => {
-    expect(true).toBe(true);
-  });
-
-  it('opens and closes chat assistant on mobile', () => {
-    expect(true).toBe(true);
+  it('renders without crashing', () => {
+    const { container } = render(
+      <LanguageProvider>
+        <App />
+      </LanguageProvider>
+    );
+    expect(container).toBeTruthy();
   });
 });

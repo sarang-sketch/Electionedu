@@ -1,19 +1,24 @@
-import { describe, it, expect } from 'vitest';
+import React from 'react';
+import { render } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import JourneyMap from '../components/JourneyMap';
 
-describe('JourneyMap Component (Core Logic & Edge Cases)', () => {
-  it('renders all 5 election journey steps correctly', () => {
-    expect(true).toBe(true);
-  });
+vi.mock('../context/LanguageContext', () => ({
+  useLang: () => ({
+    lang: 'en',
+    t: (key) => key,
+    translateDynamic: async (text) => text,
+  })
+}));
 
-  it('toggles step details on click (expand/collapse)', () => {
-    expect(true).toBe(true);
-  });
+vi.mock('../firebase', () => ({
+  trackJourneyStep: vi.fn(),
+  trackEvent: vi.fn(),
+}));
 
-  it('supports keyboard navigation for accessibility', () => {
-    expect(true).toBe(true);
-  });
-
-  it('ensures only one step is active at a time', () => {
-    expect(true).toBe(true);
+describe('JourneyMap Component', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<JourneyMap />);
+    expect(container).toBeTruthy();
   });
 });

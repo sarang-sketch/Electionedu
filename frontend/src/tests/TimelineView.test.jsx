@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import Glossary from '../components/Glossary';
+import TimelineView from '../components/TimelineView';
 
 vi.mock('../context/LanguageContext', () => ({
   useLang: () => ({
@@ -11,13 +11,9 @@ vi.mock('../context/LanguageContext', () => ({
   })
 }));
 
-vi.mock('../firebase', () => ({
-  trackGlossaryView: vi.fn(),
-}));
-
-describe('Glossary Component', () => {
+describe('TimelineView Component', () => {
   it('renders without crashing', () => {
-    const { container } = render(<Glossary />);
+    const { container } = render(<TimelineView />);
     expect(container).toBeTruthy();
   });
 });

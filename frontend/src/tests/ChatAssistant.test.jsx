@@ -1,23 +1,27 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import Glossary from '../components/Glossary';
+import ChatAssistant from '../components/ChatAssistant';
 
 vi.mock('../context/LanguageContext', () => ({
   useLang: () => ({
     lang: 'en',
     t: (key) => key,
     translateDynamic: async (text) => text,
+    LANGUAGES: [{ code: 'en', native: 'English', label: 'English' }]
   })
 }));
 
 vi.mock('../firebase', () => ({
-  trackGlossaryView: vi.fn(),
+  trackChatInteraction: vi.fn(),
 }));
 
-describe('Glossary Component', () => {
+describe('ChatAssistant Component', () => {
   it('renders without crashing', () => {
-    const { container } = render(<Glossary />);
+    // Mock scrollIntoView to prevent errors in jsdom
+    window.HTMLElement.prototype.scrollIntoView = function() {};
+    
+    const { container } = render(<ChatAssistant />);
     expect(container).toBeTruthy();
   });
 });
