@@ -1,0 +1,22 @@
+runtime: nodejs20
+env: standard
+
+instance_class: F1
+automatic_scaling:
+  min_idle_instances: automatic
+  max_idle_instances: automatic
+  min_pending_latency: automatic
+  max_pending_latency: automatic
+
+handlers:
+  - url: /(.*\.(gif|png|jpg|css|js|jsx))$
+    static_files: dist/\1
+    upload: dist/.*\.(gif|png|jpg|css|js|jsx)$
+
+  - url: /.*
+    static_files: dist/index.html
+    upload: dist/index.html
+
+env_variables:
+  NODE_ENV: "production"
+  # GEMINI_API_KEY is injected securely via Secret Manager in Cloud Build

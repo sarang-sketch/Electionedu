@@ -1,16 +1,24 @@
-import React, { useState } from 'react';
-import JourneyMap from './components/JourneyMap';
-import ChatAssistant from './components/ChatAssistant';
-import Glossary from './components/Glossary';
-import Quiz from './components/Quiz';
-import TimelineView from './components/TimelineView';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Map, Calendar, BookOpen, HelpCircle, Globe } from 'lucide-react';
 import { useLang } from './context/LanguageContext';
+import { trackPageView, trackLanguageChange } from './firebase';
+import ChatAssistant from './components/ChatAssistant';
 import './index.css';
+
+// Efficiency: Code splitting for main tabs
+const JourneyMap = React.lazy(() => import('./components/JourneyMap'));
+const Glossary = React.lazy(() => import('./components/Glossary'));
+const Quiz = React.lazy(() => import('./components/Quiz'));
+const TimelineView = React.lazy(() => import('./components/TimelineView'));
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('journey');
   const { lang, setLang, t, LANGUAGES } = useLang();
+
+  // Track page/tab views
+  useEffect(() => {
+    trackPageView(activeTab);
+  }, [activeTab]);
 
   const TABS = [
     { id: 'journey',  label: t('tabJourney'), icon: <Map size={14} /> },
@@ -101,10 +109,12 @@ export default function App() {
           style={{ display: 'grid', gridTemplateColumns: '1fr 370px', gap: '2rem', alignItems: 'start' }}
         >
           <div role="main">
-            {activeTab === 'journey'  && <JourneyMap />}
-            {activeTab === 'timeline' && <TimelineView />}
-            {activeTab === 'glossary' && <Glossary />}
-            {activeTab === 'quiz'     && <Quiz />}
+            <Suspense fallback={<div className="card" style={{ textAlign: 'center', padding: '2rem' }}>Loading Content...</div>}>
+              {activeTab === 'journey'  && <JourneyMap />}
+              {activeTab === 'timeline' && <TimelineView />}
+              {activeTab === 'glossary' && <Glossary />}
+              {activeTab === 'quiz'     && <Quiz />}
+            </Suspense>
           </div>
 
           <aside style={{ position: 'sticky', top: '80px' }}>

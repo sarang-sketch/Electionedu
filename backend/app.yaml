@@ -1,0 +1,12 @@
+runtime: nodejs20
+env: standard
+
+instance_class: F2
+automatic_scaling:
+  min_instances: 1
+  max_instances: 10
+
+env_variables:
+  NODE_ENV: "production"
+
+# Note: GEMINI_API_KEY should be configured in Google Cloud Secret Manager

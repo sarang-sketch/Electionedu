@@ -307,6 +307,41 @@ npm run dev
 
 ---
 
+## 🚀 Deploying to Vercel
+
+### Step 1: Push to GitHub
+Make sure your code is pushed to a GitHub repository.
+
+### Step 2: Import Project to Vercel
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
+2. Click "Add New" → "Project"
+3. Import your GitHub repository
+4. Vercel will auto-detect the configuration from `vercel.json`
+
+### Step 3: Add Environment Variables
+**CRITICAL**: Add your Google Gemini API key as an environment variable:
+
+1. In Vercel project settings, go to **"Settings"** → **"Environment Variables"**
+2. Add the following variable:
+   - **Name**: `GEMINI_API_KEY`
+   - **Value**: Your actual Google Gemini API key
+   - **Environment**: Select all (Production, Preview, Development)
+3. Click **"Save"**
+
+### Step 4: Redeploy
+After adding the environment variable:
+1. Go to **"Deployments"** tab
+2. Click the three dots on the latest deployment
+3. Select **"Redeploy"**
+
+✅ Your app should now be live with working AI chat!
+
+### Vercel Deployment URLs
+- **Frontend**: `https://your-app.vercel.app/`
+- **Backend API**: `https://your-app.vercel.app/_/backend/api/chat`
+
+---
+
 ## 📖 Features Overview
 
 | Feature | Description | Technology |
@@ -330,10 +365,12 @@ npm run dev
 
 | Problem | Solution |
 |---------|----------|
-| Backend won't start | Check Node.js installed, port 5000 available, correct API key in `.env` |
-| Frontend won't load | Ensure backend is running, use `http://localhost:5173`, clear browser cache |
-| AI chat not working | Verify API key, check internet connection, ensure backend is running |
-| Translation not working | Check backend is running, verify API key permissions, check internet |
+| Backend won't start (Local) | Check Node.js installed, port 5000 available, correct API key in `.env` |
+| Frontend won't load (Local) | Ensure backend is running, use `http://localhost:5173`, clear browser cache |
+| AI chat not working (Local) | Verify API key in `.env`, check internet connection, ensure backend is running |
+| Translation not working (Local) | Check backend is running, verify API key permissions, check internet |
+| **"Please add a real Gemini API key" on Vercel** | **Go to Vercel → Settings → Environment Variables → Add `GEMINI_API_KEY` → Redeploy** |
+| AI not responding on Vercel | Check Vercel logs for errors, verify environment variable is set correctly |
 
 ---
 

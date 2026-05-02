@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, RefreshCw, Zap } from 'lucide-react';
+import DOMPurify from 'dompurify';
 import { useLang } from '../context/LanguageContext';
+import { trackChatInteraction } from '../firebase';
 
 const INITIAL_QUICK_QUESTIONS = [
   'How do I register to vote?',
@@ -9,15 +11,30 @@ const INITIAL_QUICK_QUESTIONS = [
   'Who can stand for election?',
 ];
 
+/**
+ * Safely parses markdown bold text (**text**) and renders it as strong tags.
+ * Also sanitizes the entire text using DOMPurify for security.
+ * @param {string} text - The raw text from the AI
+ * @returns {React.ReactNode[]} Array of React nodes
+ */
 const renderText = (text) => {
-  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  // Sanitize input to prevent XSS (Security enhancement)
+  const safeText = DOMPurify.sanitize(text || '');
+  const parts = safeText.split(/(\*\*[^*]+\*\*)/g);
   return parts.map((part, i) =>
     part.startsWith('**') && part.endsWith('**')
       ? <strong key={i} style={{ color: '#2563eb' }}>{part.slice(2, -2)}</strong>
-      : part
+      : <span key={i} dangerouslySetInnerHTML={{ __html: part.replace(/\n/g, '<br/>') }} />
   );
 };
 
+/**
+ * ChatAssistant Component
+ * Provides an AI-powered conversational interface for users to ask questions
+ * about the election process. Powered by Google Gemini and supports multiple languages.
+ * 
+ * @component
+ */
 export default function ChatAssistant() {
   const { lang, t, translateDynamic, LANGUAGES } = useLang();
   const [quickQuestions, setQuickQuestions] = useState(INITIAL_QUICK_QUESTIONS);
@@ -52,12 +69,15 @@ export default function ChatAssistant() {
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
-  const sendMessage = async (text) => {
+  const sendMessage = async (text, isQuickQuestion = false) => {
     const msg = text.trim();
     if (!msg || loading) return;
     setInput('');
     setMessages(prev => [...prev, { role: 'user', text: msg }]);
     setLoading(true);
+
+    // Analytics Tracking
+    trackChatInteraction(isQuickQuestion ? 'quick_ask' : 'custom_query', lang);
     
     // Prepend language instruction if not English
     const targetLang = LANGUAGES.find(l => l.code === lang)?.label || 'English';
@@ -230,7 +250,7 @@ export default function ChatAssistant() {
           {quickQuestions.map((q, idx) => (
             <button
               key={idx}
-              onClick={() => sendMessage(INITIAL_QUICK_QUESTIONS[idx])}
+              onClick={() => sendMessage(INITIAL_QUICK_QUESTIONS[idx], true)}
               disabled={loading}
               style={{
                 fontSize: '0.72rem', padding: '0.3rem 0.65rem', borderRadius: '20px',
