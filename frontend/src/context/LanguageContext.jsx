@@ -27,7 +27,11 @@ export function LanguageProvider({ children }) {
     const targetLabel = LANGUAGES.find(l => l.code === targetLangCode)?.label || 'Hindi';
     
     try {
-      const res = await fetch('http://localhost:5000/api/translate', {
+      const apiUrl = import.meta.env.PROD 
+        ? '/_/backend/api/translate' 
+        : 'http://localhost:5000/api/translate';
+      
+      const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, targetLang: targetLabel })
