@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Election Timeline Visualization Component.
+ * Renders an interactive Google Charts Timeline alongside translated
+ * phase cards for a visual overview of the election cycle.
+ *
+ * @author sarang-sketch
+ * @module components/TimelineView
+ */
 import React, { useState, useEffect } from 'react';
 import { Chart } from 'react-google-charts';
 import { Calendar, Info } from 'lucide-react';

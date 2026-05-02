@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Interactive Quiz Component.
+ * Presents multiple-choice questions about the election process with
+ * instant visual feedback, score tracking, grading, and multilingual support.
+ *
+ * @author sarang-sketch
+ * @module components/Quiz
+ */
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, RotateCcw, Trophy, Star, ChevronRight, HelpCircle, Zap } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';

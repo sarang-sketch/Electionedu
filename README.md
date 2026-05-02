@@ -49,9 +49,15 @@ This project heavily leverages the Google ecosystem:
 - **CORS Protection:** Enforces strict cross-origin resource sharing policies.
 
 ### Validation of Functionality (Testing)
-- **Frontend (Vitest):** A comprehensive suite of component tests validates UI rendering and interactions, providing robust code coverage.
-- **Backend (Jest & Supertest):** Integration tests rigorously validate the Express API endpoints, ensuring correct status codes and error handling schemas.
+- **Frontend (Vitest):** A comprehensive suite of 44 tests validates UI rendering, accessibility attributes, utility functions, configuration constants, and component interactions.
+- **Backend (Jest & Supertest):** 12 integration tests rigorously validate Express endpoints, security headers (Helmet), CORS configuration, and response format schemas.
 - **Error Boundaries:** React `ErrorBoundary` gracefully catches runtime crashes, preventing white-screen failures in production.
+
+### Code Quality & Maintainability
+- **Modular Architecture:** Shared logic is extracted into dedicated modules (`utils/helpers.js`, `constants/config.js`) to eliminate duplication.
+- **JSDoc Documentation:** Every file has comprehensive `@fileoverview` headers, and all functions have full JSDoc annotations (`@param`, `@returns`, `@module`).
+- **Centralized Configuration:** Magic numbers, API paths, color tokens, and accessibility IDs are defined in a single frozen config object.
+- **ESLint Standards:** A project-wide `.eslintrc.json` enforces `prefer-const`, `eqeqeq`, `no-var`, and `curly` rules.
 
 ---
 

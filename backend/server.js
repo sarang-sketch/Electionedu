@@ -99,6 +99,15 @@ app.use(hpp());
 // Security: Sanitize data against NoSQL Injection (even if not using Mongo, good practice)
 app.use(mongoSanitize());
 
+// Security: Validate Content-Type for POST requests with body
+app.use((req, res, next) => {
+  if (req.method === 'POST' && req.headers['content-length'] > 0 && req.headers['content-type'] && !req.is('application/json')) {
+    writeLog(`Rejected non-JSON Content-Type: ${req.get('Content-Type')}`, 'WARNING');
+    return res.status(415).json({ error: 'Content-Type must be application/json' });
+  }
+  next();
+});
+
 // Rate limiting: prevent abuse
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15-minute window

@@ -1,7 +1,17 @@
+/**
+ * @fileoverview Root Application Component for Election Education Assistant.
+ * Manages top-level routing between tabs (Journey, Timeline, Glossary, Quiz),
+ * language selection, and lazy-loaded code-split views.
+ *
+ * @author sarang-sketch
+ * @version 2.0.0
+ */
+
 import React, { useState, useEffect, Suspense } from 'react';
 import { Map, Calendar, BookOpen, HelpCircle, Globe } from 'lucide-react';
 import { useLang } from './context/LanguageContext';
 import { trackPageView, trackLanguageChange } from './firebase';
+import { A11Y } from './constants/config';
 import ChatAssistant from './components/ChatAssistant';
 import './index.css';
 
@@ -29,8 +39,13 @@ export default function App() {
 
   return (
     <>
+      {/* Accessibility: Skip to main content link */}
+      <a href={`#${A11Y.SKIP_LINK_ID}`} className="sr-only" style={{ position: 'absolute', left: '-9999px', top: 'auto', ':focus': { left: '10px', top: '10px' } }}>
+        Skip to main content
+      </a>
+
       {/* ── HEADER ── */}
-      <header>
+      <header role="banner">
         <div className="container">
           <div className="brand">
             <div className="brand-icon">
@@ -62,6 +77,8 @@ export default function App() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: '#f8fafc', padding: '0.2rem 0.6rem', borderRadius: '20px', border: '1px solid #e2e8f0' }}>
               <Globe size={14} color="#64748b" />
               <select 
+                id={A11Y.LANG_SELECT_ID}
+                aria-label="Select language"
                 value={lang} 
                 onChange={(e) => setLang(e.target.value)}
                 style={{ 
@@ -108,7 +125,7 @@ export default function App() {
           className="layout-grid"
           style={{ display: 'grid', gridTemplateColumns: '1fr 370px', gap: '2rem', alignItems: 'start' }}
         >
-          <div role="main">
+          <div role="main" id={A11Y.SKIP_LINK_ID}>
             <Suspense fallback={<div className="card" style={{ textAlign: 'center', padding: '2rem' }}>Loading Content...</div>}>
               {activeTab === 'journey'  && <JourneyMap />}
               {activeTab === 'timeline' && <TimelineView />}
@@ -124,7 +141,7 @@ export default function App() {
       </main>
 
       {/* ── FOOTER ── */}
-      <footer>
+      <footer role="contentinfo">
         <div className="container">
           <p>
             © {new Date().getFullYear()} <strong>ElectionEdu</strong> · Powered by{' '}

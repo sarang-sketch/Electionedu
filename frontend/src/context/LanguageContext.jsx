@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Language Context Provider.
+ * Manages application-wide language state, static UI translations,
+ * and dynamic content translation via the Google Gemini API backend.
+ *
+ * @author sarang-sketch
+ * @module context/LanguageContext
+ */
 import React, { createContext, useContext, useState } from 'react';
 import { translations } from './translations';
 

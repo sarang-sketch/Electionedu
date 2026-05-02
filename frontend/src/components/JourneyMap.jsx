@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Interactive Journey Map Component.
+ * Renders a 5-stage visual progression through the democratic election
+ * process, with expandable cards, progress tracking, and multilingual support.
+ *
+ * @author sarang-sketch
+ * @module components/JourneyMap
+ */
 import React, { useState, useEffect } from 'react';
 import { Users, Flag, CheckSquare, BarChart2, Award, ChevronDown, ChevronUp, Lightbulb } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';

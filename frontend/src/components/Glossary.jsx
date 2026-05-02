@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Searchable Glossary Component.
+ * Displays election terminology with category filtering, real-time search,
+ * expandable definitions, and multilingual translation support.
+ *
+ * @author sarang-sketch
+ * @module components/Glossary
+ */
 import React, { useState, useEffect } from 'react';
 import { Search, BookOpen, ChevronDown } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
@@ -76,8 +84,11 @@ export default function Glossary() {
             position: 'absolute', left: '13px', top: '50%',
             transform: 'translateY(-50%)', color: '#94a3b8', pointerEvents: 'none',
           }} />
+          <label htmlFor="glossary-search" className="sr-only">Search election terms</label>
           <input
+            id="glossary-search"
             type="text"
+            aria-label="Search election terms"
             placeholder={t('searchPlaceholder')}
             value={search}
             onChange={e => setSearch(e.target.value)}
