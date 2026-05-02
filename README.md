@@ -78,7 +78,7 @@ graph TB
     
     subgraph "Backend Layer"
         H[Express.js Server]
-        I[/api/chat Endpoint]
+        I["API Chat Endpoint"]
         J[Translation Service]
     end
     
@@ -87,7 +87,12 @@ graph TB
         L[Google Charts API]
     end
     
-    A --> B & C & D & E & F & G
+    A --> B
+    A --> C
+    A --> D
+    A --> E
+    A --> F
+    A --> G
     C --> I
     G --> J
     I --> K
